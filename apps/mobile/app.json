@@ -1,0 +1,29 @@
+{
+  "expo": {
+    "name": "Geenius",
+    "slug": "geenius",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "scheme": "geenius",
+    "userInterfaceStyle": "automatic",
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "app.geenius.mobile"
+    },
+    "android": {
+      "adaptiveIcon": {
+        "backgroundColor": "#ffffff"
+      },
+      "package": "app.geenius.mobile"
+    },
+    "web": {
+      "bundler": "metro"
+    },
+    "plugins": ["expo-router"],
+    "extra": {
+      "router": {
+        "origin": false
+      }
+    }
+  }
+}

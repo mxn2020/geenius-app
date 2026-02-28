@@ -1,28 +1,5 @@
-import { View, Text, StyleSheet } from "react-native"
+import { Redirect } from "expo-router"
 
-export default function HomeScreen() {
-  return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Geenius</Text>
-      <Text style={styles.subtitle}>Your projects, powered by AI</Text>
-    </View>
-  )
+export default function Index() {
+  return <Redirect href="/(app)" />
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-    backgroundColor: "#fff",
-  },
-  title: {
-    fontSize: 32,
-    fontWeight: "700",
-    marginBottom: 8,
-  },
-  subtitle: {
-    fontSize: 16,
-    color: "#666",
-  },
-})

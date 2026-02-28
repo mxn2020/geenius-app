@@ -66,6 +66,10 @@ export class StripeService {
     })
   }
 
+  async getSubscription(subId: string): Promise<Stripe.Subscription> {
+    return this.stripe.subscriptions.retrieve(subId)
+  }
+
   verifyWebhookSignature(payload: string, signature: string, secret: string): Stripe.Event {
     return this.stripe.webhooks.constructEvent(payload, signature, secret)
   }
