@@ -73,8 +73,8 @@ runtimeRouter.post(
 
       // Check project credits before calling the AI model
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const balance = await convex.query("ai:getCreditBalance" as any, { projectId: project._id })
-      if (typeof balance === "number" && balance <= 0) {
+      const allowance = await convex.query("ai:getCurrentAllowance" as any, { projectId: project._id })
+      if (allowance && allowance.creditsUsed >= allowance.creditsGranted) {
         return c.json({ error: "Payment Required", code: "CREDITS_EXHAUSTED" }, 402)
       }
 

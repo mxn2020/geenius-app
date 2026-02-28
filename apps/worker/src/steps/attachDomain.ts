@@ -73,7 +73,6 @@ export async function updateProjectDomainStep(ctx: JobContext): Promise<void> {
   await ctx.convex.mutation("projects:updateProject", {
     id: ctx.projectId,
     primaryUrl: `https://${domain}`,
-    pendingDomain: null,
   })
   await ctx.log("info", "Project updated with custom domain")
 }
