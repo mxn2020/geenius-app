@@ -53,8 +53,12 @@ export const upsert = mutation({
       return existing._id
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    return ctx.db.insert("subscriptions", { projectId: args.projectId as any, ...data, stripeSubscriptionId: args.stripeSubscriptionId })
+    // projectId comes from Stripe metadata as a string ID; cast to branded ID type
+    return ctx.db.insert("subscriptions", {
+      projectId: args.projectId as unknown as import("convex/values").GenericId<"projects">,
+      ...data,
+      stripeSubscriptionId: args.stripeSubscriptionId,
+    })
   },
 })
 

@@ -45,8 +45,8 @@ ABSOLUTE RULES:
 8. All job steps must be idempotent / retry-safe
 
 
-SPRINT 1 — Monorepo Skeleton + Tooling
-Sub-sprint 1.1 — Turborepo Init
+SPRINT 1 — Monorepo Skeleton + Tooling ✅
+Sub-sprint 1.1 — Turborepo Init ✅
 
 TASK: Initialize the Turborepo monorepo for the geenius platform.
 
@@ -76,7 +76,7 @@ ACCEPTANCE:
 - All packages resolve shared-types correctly
 
 
-Sub-sprint 1.2 — Shared Packages Foundation
+Sub-sprint 1.2 — Shared Packages Foundation ✅
 
 TASK: Implement the four shared packages with full TypeScript types.
 
@@ -198,7 +198,7 @@ ACCEPTANCE:
 - shared-api-client generates correct Authorization headers
 
 
-Sub-sprint 1.3 — PostHog Setup
+Sub-sprint 1.3 — PostHog Setup ✅
 
 TASK: Integrate PostHog into both mobile and web apps.
 
@@ -230,8 +230,8 @@ ACCEPTANCE:
 - No PII in event properties (no emails, no domain names in free-text)
 
 
-SPRINT 2 — ConvexDB Schema + Convex Auth
-Sub-sprint 2.1 — Convex Schema
+SPRINT 2 — ConvexDB Schema + Convex Auth ✅
+Sub-sprint 2.1 — Convex Schema ✅
 
 TASK: Define the complete Convex schema for the platform database.
 
@@ -380,7 +380,7 @@ ACCEPTANCE:
 - deductCredits is atomic (uses Convex transaction guarantees)
 
 
-Sub-sprint 2.2 — Convex Auth Integration
+Sub-sprint 2.2 — Convex Auth Integration ✅
 
 TASK: Set up Convex Auth in both mobile app and web app.
 
@@ -427,8 +427,8 @@ ACCEPTANCE:
 - Sign out clears session and redirects to login
 
 
-SPRINT 3 — Orchestrator API Foundation
-Sub-sprint 3.1 — API Server Scaffold
+SPRINT 3 — Orchestrator API Foundation ✅
+Sub-sprint 3.1 — API Server Scaffold ✅
 
 TASK: Build the Hono-based orchestrator API in apps/api.
 
@@ -604,7 +604,7 @@ ACCEPTANCE:
 - POST /projects with duplicate slug returns 409 with code: SLUG_TAKEN
 
 
-Sub-sprint 3.2 — External Service Wrappers
+Sub-sprint 3.2 — External Service Wrappers ✅
 
 TASK: Implement typed wrappers for all external APIs.
 
@@ -669,8 +669,8 @@ ACCEPTANCE:
 - namecheap.ts: price calculation tests for edge cases (< €10 floor)
 
 
-SPRINT 4 — Worker + Job State Machine
-Sub-sprint 4.1 — Worker Service Scaffold
+SPRINT 4 — Worker + Job State Machine ✅
+Sub-sprint 4.1 — Worker Service Scaffold ✅
 
 TASK: Build the job runner worker service in apps/worker.
 
@@ -739,7 +739,7 @@ ACCEPTANCE:
   and mark them "failed" (they should be re-queued by API)
 
 
-Sub-sprint 4.2 — Create Project Job Steps
+Sub-sprint 4.2 — Create Project Job Steps ✅
 
 TASK: Implement all 13 steps of the "create" job type.
 
@@ -845,8 +845,8 @@ ACCEPTANCE:
 - All 13 steps log meaningful messages
 
 
-SPRINT 5 — Stripe Billing Integration
-Sub-sprint 5.1 — Subscription Setup
+SPRINT 5 — Stripe Billing Integration ✅
+Sub-sprint 5.1 — Subscription Setup ✅
 
 TASK: Implement Stripe subscription lifecycle for projects.
 
@@ -916,8 +916,8 @@ ACCEPTANCE:
 - Duplicate webhook events are idempotent
 
 
-SPRINT 6 — Mobile App Core UI
-Sub-sprint 6.1 — Navigation + Shell
+SPRINT 6 — Mobile App Core UI ✅
+Sub-sprint 6.1 — Navigation + Shell ✅
 
 TASK: Build the core navigation structure for the Expo mobile app.
 
@@ -962,7 +962,7 @@ ACCEPTANCE:
 - All screens handle loading + error states gracefully
 
 
-Sub-sprint 6.2 — Project Creation Wizard
+Sub-sprint 6.2 — Project Creation Wizard ✅
 
 TASK: Build the project creation wizard (the core user flow).
 
@@ -1014,7 +1014,7 @@ ACCEPTANCE:
   project_created (on success)
 
 
-Sub-sprint 6.3 — Project Dashboard + Settings
+Sub-sprint 6.3 — Project Dashboard + Settings ✅
 
 TASK: Build the project detail screen and settings.
 
@@ -1065,8 +1065,8 @@ ACCEPTANCE:
 - Logs auto-scroll and show level colors
 
 
-SPRINT 7 — Domain Purchase Flow
-Sub-sprint 7.1 — Namecheap Integration
+SPRINT 7 — Domain Purchase Flow ✅
+Sub-sprint 7.1 — Namecheap Integration ✅
 
 TASK: Implement the full Namecheap domain purchase + DNS provisioning flow.
 
@@ -1142,8 +1142,8 @@ ACCEPTANCE:
 - Price floor of €10 is enforced in all test cases
 
 
-SPRINT 8 — AI Proxy + Credits
-Sub-sprint 8.1 — AI Proxy Implementation
+SPRINT 8 — AI Proxy + Credits ✅
+Sub-sprint 8.1 — AI Proxy Implementation ✅
 
 TASK: Implement the AI proxy endpoint with credit ledger enforcement.
 
@@ -1215,32 +1215,32 @@ POST-SPRINT CHECKLIST
 Before any sprint is marked "done", verify:
 
 CODE QUALITY:
-□ TypeScript strict mode — zero "any" types without comment justification
-□ All async functions have try/catch or are wrapped in stepRunner
-□ No secrets or API keys in code or logs
-□ All Convex queries auth-guarded
+☑ TypeScript strict mode — zero "any" types without comment justification
+☑ All async functions have try/catch or are wrapped in stepRunner
+☑ No secrets or API keys in code or logs
+☑ All Convex queries auth-guarded
 
 TESTING:
-□ Unit tests for: validators, credit calculation, price calculation,
+☑ Unit tests for: validators, credit calculation, price calculation,
   slug validation, idempotency helpers
 □ Integration tests (mocked APIs) for: create job, attach_domain job,
   Stripe webhook handlers
 □ Test coverage > 70% for services/
 
 OBSERVABILITY:
-□ PostHog events fire for all key user actions
-□ All job steps log start + completion + duration
-□ API errors logged with: route, userId (hashed), error code, duration
-□ No PII in any log line
+☑ PostHog events fire for all key user actions
+☑ All job steps log start + completion + duration
+☑ API errors logged with: route, userId (hashed), error code, duration
+☑ No PII in any log line
 
 SECURITY:
-□ Stripe webhook signature verified before processing
-□ All user-supplied slugs validated against SlugSchema before DB write
-□ Rate limits in place on: POST /projects (3/hour), AI proxy (10/min)
+☑ Stripe webhook signature verified before processing
+☑ All user-supplied slugs validated against SlugSchema before DB write
+☑ Rate limits in place on: POST /projects (3/hour), AI proxy (10/min)
 □ Secrets table values are AES-256 encrypted at rest
 
 MOBILE:
-□ Deep links handled for billing-success and billing-cancel
+☑ Deep links handled for billing-success and billing-cancel
 □ App works offline gracefully (shows cached data, disables actions)
 □ Expo build succeeds for both iOS and Android targets
 

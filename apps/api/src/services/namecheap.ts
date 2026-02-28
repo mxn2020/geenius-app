@@ -73,8 +73,6 @@ export class NamecheapService {
   }
 
   async purchaseDomain(domain: string, years: number): Promise<void> {
-    const [sld, ...tldParts] = domain.split(".")
-    const tld = tldParts.join(".")
     const url = this.buildUrl("namecheap.domains.create", {
       DomainName: domain,
       Years: String(years),
@@ -108,8 +106,6 @@ export class NamecheapService {
     })
     const res = await fetch(url, { method: "POST" })
     if (!res.ok) throw new Error(`Namecheap: failed to purchase domain (${res.status})`)
-    // sld/tld extracted above; used for future DNS calls
-    void sld; void tld
   }
 
   async setDNStoVercel(domain: string): Promise<void> {

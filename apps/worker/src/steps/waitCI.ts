@@ -16,8 +16,11 @@ export async function waitCI(ctx: JobContext): Promise<void> {
   let elapsed = 0
 
   while (Date.now() < deadline) {
-    // In production: poll GitHub commit status API
-    // For now, simulate a single pass after a short delay
+    // TODO: In production, poll GitHub Actions check runs API using the commit SHA
+    // from the previous triggerCI step. Replace this simulation with:
+    // const status = await github.getCheckRunStatus(repoName, commitSHA)
+    // if (status === "success") return
+    // if (status === "failure") throw new Error(`CI failed — check: ${ciLogsUrl}`)
     await new Promise((r) => setTimeout(r, POLL_INTERVAL_MS))
     elapsed += POLL_INTERVAL_MS
     await ctx.log("info", `CI still running... (${Math.round(elapsed / 1000)}s elapsed)`)

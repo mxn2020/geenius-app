@@ -237,7 +237,7 @@ export default function NewProjectScreen() {
       <ActivityIndicator size="large" color="#6366f1" style={styles.spinner} />
 
       {["Creating repository", "Pushing template", "Deploying", "Going live"].map(
-        (stepLabel, i) => (
+        (stepLabel) => (
           <View key={stepLabel} style={styles.stepRow}>
             <View style={styles.stepDot} />
             <Text style={styles.stepText}>{stepLabel}</Text>
