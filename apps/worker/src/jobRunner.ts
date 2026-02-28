@@ -14,6 +14,13 @@ import { deploy } from "./steps/deploy.js"
 import { assignSlugDomain } from "./steps/assignSlugDomain.js"
 import { verifyLive } from "./steps/verifyLive.js"
 import { markLive } from "./steps/markLive.js"
+import {
+  purchaseDomainStep,
+  configureDNSStep,
+  addToVercelStep,
+  verifyDomainStep,
+  updateProjectDomainStep,
+} from "./steps/attachDomain.js"
 
 type Step = { name: string; fn: (ctx: JobContext) => Promise<void>; retryable?: boolean }
 
@@ -49,11 +56,20 @@ const UPGRADE_STEPS: Step[] = [
   { name: "mark_live", fn: markLive },
 ]
 
+const ATTACH_DOMAIN_STEPS: Step[] = [
+  { name: "purchase_domain", fn: purchaseDomainStep },
+  { name: "configure_dns", fn: configureDNSStep },
+  { name: "add_to_vercel", fn: addToVercelStep },
+  { name: "verify_domain", fn: verifyDomainStep, retryable: false },
+  { name: "update_project_domain", fn: updateProjectDomainStep },
+]
+
 function getSteps(jobType: string): Step[] {
   switch (jobType) {
     case "create": return CREATE_STEPS
     case "redeploy": return REDEPLOY_STEPS
     case "upgrade": return UPGRADE_STEPS
+    case "attach_domain": return ATTACH_DOMAIN_STEPS
     default: return CREATE_STEPS
   }
 }
