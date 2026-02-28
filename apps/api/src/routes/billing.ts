@@ -113,7 +113,7 @@ billingRouter.post("/webhook/stripe", async (c) => {
             projectId,
             periodStart,
             periodEnd,
-            creditsGranted: 100,
+            creditsGranted: 10000,
           })
         }
         break

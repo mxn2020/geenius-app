@@ -199,7 +199,7 @@ export default function NewProjectScreen() {
     return (
       <ScrollView style={styles.container} contentContainerStyle={styles.content}>
         <Text style={styles.stepLabel}>Step 3 of 3</Text>
-        <Text style={styles.title}>Review &amp; Launch</Text>
+        <Text style={styles.title}>Review & Launch</Text>
 
         <View style={styles.summaryCard}>
           <Text style={styles.summaryRow}>
