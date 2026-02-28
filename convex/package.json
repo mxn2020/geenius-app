@@ -1,0 +1,18 @@
+{
+  "name": "@geenius/convex",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "convex dev",
+    "deploy": "convex deploy",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "convex": "^1.21.2",
+    "@convex-dev/auth": "^0.0.87"
+  },
+  "devDependencies": {
+    "@geenius/tsconfig": "workspace:*",
+    "typescript": "^5.7.3"
+  }
+}

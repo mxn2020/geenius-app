@@ -1,0 +1,32 @@
+{
+  "name": "@geenius/web",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "lint": "eslint src/",
+    "typecheck": "tsc --noEmit",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "convex": "^1.21.2",
+    "@convex-dev/auth": "^0.0.87",
+    "posthog-js": "^1.220.4",
+    "zod": "^3.24.1",
+    "@geenius/shared-types": "workspace:*",
+    "@geenius/shared-validators": "workspace:*",
+    "@geenius/shared-api-client": "workspace:*",
+    "@geenius/shared-ui-tokens": "workspace:*"
+  },
+  "devDependencies": {
+    "@geenius/tsconfig": "workspace:*",
+    "@types/react": "^18.3.18",
+    "@types/react-dom": "^18.3.5",
+    "@vitejs/plugin-react": "^4.3.4",
+    "typescript": "^5.7.3",
+    "vite": "^6.1.1"
+  }
+}

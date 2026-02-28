@@ -1,0 +1,7 @@
+{
+  "extends": "@geenius/tsconfig/tsconfig.react-native.json",
+  "compilerOptions": {
+    "rootDir": "."
+  },
+  "include": ["app", "src", "*.ts", "*.tsx"]
+}

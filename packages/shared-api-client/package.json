@@ -1,0 +1,22 @@
+{
+  "name": "@geenius/shared-api-client",
+  "version": "0.0.0",
+  "private": true,
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "zod": "^3.24.1",
+    "@geenius/shared-types": "workspace:*",
+    "@geenius/shared-validators": "workspace:*"
+  },
+  "devDependencies": {
+    "@geenius/tsconfig": "workspace:*",
+    "typescript": "^5.7.3"
+  }
+}

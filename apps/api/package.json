@@ -1,0 +1,29 @@
+{
+  "name": "@geenius/api",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "tsx watch src/index.ts",
+    "build": "tsc",
+    "lint": "eslint src/",
+    "typecheck": "tsc --noEmit",
+    "start": "node dist/index.js",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "hono": "^4.7.4",
+    "@hono/node-server": "^1.13.7",
+    "@hono/zod-validator": "^0.4.3",
+    "convex": "^1.21.2",
+    "zod": "^3.24.1",
+    "stripe": "^17.7.0",
+    "@geenius/shared-types": "workspace:*",
+    "@geenius/shared-validators": "workspace:*"
+  },
+  "devDependencies": {
+    "@geenius/tsconfig": "workspace:*",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.3",
+    "vitest": "^2.1.8"
+  }
+}

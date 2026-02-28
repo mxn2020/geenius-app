@@ -1,0 +1,31 @@
+{
+  "name": "@geenius/mobile",
+  "version": "0.0.0",
+  "private": true,
+  "main": "expo-router/entry",
+  "scripts": {
+    "dev": "expo start",
+    "build": "expo export",
+    "lint": "eslint src/ app/",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "expo": "~52.0.35",
+    "expo-router": "~4.0.17",
+    "expo-status-bar": "~2.0.1",
+    "react": "18.3.1",
+    "react-native": "0.76.6",
+    "convex": "^1.21.2",
+    "@convex-dev/auth": "^0.0.87",
+    "posthog-react-native": "^3.4.1",
+    "@geenius/shared-types": "workspace:*",
+    "@geenius/shared-validators": "workspace:*",
+    "@geenius/shared-api-client": "workspace:*",
+    "@geenius/shared-ui-tokens": "workspace:*"
+  },
+  "devDependencies": {
+    "@geenius/tsconfig": "workspace:*",
+    "@types/react": "~18.3.12",
+    "typescript": "^5.7.3"
+  }
+}
