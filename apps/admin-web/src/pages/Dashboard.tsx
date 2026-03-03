@@ -7,7 +7,7 @@ import {
   Separator,
   Loading,
   EmptyState,
-} from "@geenius-ui/react"
+} from "@geenius-ui/react-css"
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const listProjectsQuery = "projects:getAll" as any
@@ -128,7 +128,7 @@ export default function Dashboard() {
         {/* Projects */}
         <h2 style={styles.sectionTitle}>All Projects</h2>
         {projects === undefined ? (
-          <Loading fullScreen message="Loading projects..." showMessage />
+          <Loading>Loading projects...</Loading>
         ) : projects.length === 0 ? (
           <EmptyState title="No projects yet" description="Projects will appear here once created." />
         ) : (
@@ -139,7 +139,6 @@ export default function Dashboard() {
                   <span style={styles.projectName}>{project.name}</span>
                   <Badge
                     variant={STATUS_VARIANTS[project.status] || "default"}
-                    style={{ textTransform: "capitalize" }}
                   >
                     {project.status}
                   </Badge>

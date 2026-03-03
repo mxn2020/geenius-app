@@ -1,4 +1,5 @@
 import React from "react"
+import "@geenius-ui/react-css/styles"
 import ReactDOM from "react-dom/client"
 import App from "./App"
 import { ConvexProvider } from "./providers/ConvexProvider"

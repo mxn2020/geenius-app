@@ -3,7 +3,7 @@ import { useConvexAuth } from "convex/react"
 import { useQuery } from "convex/react"
 import { useAuthActions } from "@convex-dev/auth/react"
 import { api } from "../../../convex/_generated/api"
-import { Button, Card, Loading } from "@geenius-ui/react"
+import { Button, Card, Loading } from "@geenius-ui/react-css"
 import Login from "./pages/Login"
 import Dashboard from "./pages/Dashboard"
 
@@ -13,7 +13,7 @@ function AppContent() {
   const { signOut } = useAuthActions()
 
   if (isLoading || (isAuthenticated && user === undefined)) {
-    return <Loading fullScreen message="Loading..." showMessage />
+    return <Loading>Loading...</Loading>
   }
 
   if (!isAuthenticated) {

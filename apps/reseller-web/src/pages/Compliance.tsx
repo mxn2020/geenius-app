@@ -6,7 +6,7 @@ import {
     Badge,
     Loading,
     EmptyState,
-} from "@geenius-ui/react"
+} from "@geenius-ui/react-css"
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const getRulesQuery = "compliance:getRulesForMarket" as any
@@ -71,7 +71,7 @@ export default function Compliance() {
             </Card></div>
 
             {rules === undefined ? (
-                <Loading fullScreen message="Loading rules..." showMessage />
+                <Loading>Loading rules...</Loading>
             ) : rules.length === 0 ? (
                 <EmptyState title="No rules seeded yet" description="Run the compliance:seedRules mutation in the Convex dashboard." />
             ) : (

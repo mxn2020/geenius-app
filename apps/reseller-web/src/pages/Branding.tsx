@@ -6,13 +6,7 @@ import {
     Label,
     Section,
     AlertDialog,
-    AlertDialogContent,
-    AlertDialogHeader,
-    AlertDialogTitle,
-    AlertDialogDescription,
-    AlertDialogFooter,
-    AlertDialogAction
-} from "@geenius-ui/react"
+} from "@geenius-ui/react-css"
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const getProfileQuery = "resellers:getProfile" as any
@@ -133,17 +127,14 @@ export default function Branding() {
                 </Button>
             </form>
 
-            <AlertDialog open={!!error} onOpenChange={(open) => !open && setError(null)}>
-                <AlertDialogContent>
-                    <AlertDialogHeader>
-                        <AlertDialogTitle>Error</AlertDialogTitle>
-                        <AlertDialogDescription>{error}</AlertDialogDescription>
-                    </AlertDialogHeader>
-                    <AlertDialogFooter>
-                        <AlertDialogAction onClick={() => setError(null)}>OK</AlertDialogAction>
-                    </AlertDialogFooter>
-                </AlertDialogContent>
-            </AlertDialog>
+            <AlertDialog
+                open={!!error}
+                onClose={() => setError(null)}
+                title="Error"
+                description={error || ""}
+                confirmText="OK"
+                onConfirm={() => setError(null)}
+            />
         </div>
     )
 }

@@ -8,20 +8,11 @@ import {
   Textarea,
   Label,
   Select,
-  SelectTrigger,
-  SelectValue,
-  SelectContent,
   SelectItem,
   Card,
   Badge,
   AlertDialog,
-  AlertDialogContent,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogAction,
-} from "@geenius-ui/react"
+} from "@geenius-ui/react-css"
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const listProjectsQuery = "projects:listProjects" as any
@@ -144,16 +135,11 @@ export default function Dashboard() {
 
                 <div style={styles.inputGroup}>
                   <Label>Plan</Label>
-                  <Select value={plan} onValueChange={setPlan}>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select plan" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="website">Website — Static / Landing Page</SelectItem>
-                      <SelectItem value="webapp">Web App — Dynamic React</SelectItem>
-                      <SelectItem value="authdb">Auth + DB — Fullstack Convex</SelectItem>
-                      <SelectItem value="ai">AI — Auth + DB + Anthropic</SelectItem>
-                    </SelectContent>
+                  <Select value={plan} onChange={(e) => setPlan(e.target.value)}>
+                    <SelectItem value="website">Website — Static / Landing Page</SelectItem>
+                    <SelectItem value="webapp">Web App — Dynamic React</SelectItem>
+                    <SelectItem value="authdb">Auth + DB — Fullstack Convex</SelectItem>
+                    <SelectItem value="ai">AI — Auth + DB + Anthropic</SelectItem>
                   </Select>
                 </div>
 
@@ -189,7 +175,7 @@ export default function Dashboard() {
               <Card key={project._id} padding="md">
                 <div style={styles.cardHeader}>
                   <span style={styles.projectName}>{project.name}</span>
-                  <Badge variant={STATUS_COLORS[project.status] || "default"} style={{ textTransform: "capitalize" }}>
+                  <Badge variant={STATUS_COLORS[project.status] || "default"}>
                     {project.status}
                   </Badge>
                 </div>
@@ -213,17 +199,14 @@ export default function Dashboard() {
         )}
       </main>
 
-      <AlertDialog open={!!error} onOpenChange={(open) => !open && setError(null)}>
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>Error</AlertDialogTitle>
-            <AlertDialogDescription>{error}</AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogAction onClick={() => setError(null)}>OK</AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
+      <AlertDialog
+        open={!!error}
+        onClose={() => setError(null)}
+        title="Error"
+        description={error || ""}
+        confirmText="OK"
+        onConfirm={() => setError(null)}
+      />
     </div>
   )
 }

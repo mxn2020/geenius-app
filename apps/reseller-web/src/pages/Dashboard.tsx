@@ -4,7 +4,7 @@ import {
   Badge,
   Alert,
   Loading,
-} from "@geenius-ui/react"
+} from "@geenius-ui/react-css"
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const getProfileQuery = "resellers:getProfile" as any
@@ -35,7 +35,7 @@ export default function Dashboard() {
   const activeCampaigns = campaigns?.filter((c: any) => c.status === "active").length ?? 0
 
   if (profile === undefined) {
-    return <Loading fullScreen message="Loading dashboard..." showMessage />
+    return <Loading>Loading dashboard...</Loading>
   }
 
   return (

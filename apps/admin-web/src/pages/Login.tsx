@@ -1,6 +1,6 @@
 import { useState } from "react"
 import { useAuth } from "../hooks/useAuth"
-import { Button, Input, Card, Label } from "@geenius-ui/react"
+import { Button, Input, Card, Label } from "@geenius-ui/react-css"
 
 export default function Login() {
   const { signIn, signUp } = useAuth()

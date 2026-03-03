@@ -1,7 +1,7 @@
 import { useQuery } from "convex/react"
 import { useAuth } from "../hooks/useAuth"
 import { Link, useParams } from "@tanstack/react-router"
-import { Button, Card, Badge } from "@geenius-ui/react"
+import { Button, Card, Badge } from "@geenius-ui/react-css"
 
 // We will need a convex query to get a specific project by id/slug
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -58,7 +58,7 @@ export default function ProjectDetail() {
                 <div style={styles.headerLeft}>
                     <Link to="/" style={styles.backLink}>← Back</Link>
                     <h1 style={styles.headerTitle}>{project.name}</h1>
-                    <Badge variant="secondary" style={{ textTransform: "capitalize", marginLeft: "1rem" }}>
+                    <Badge variant="secondary">
                         {project.status}
                     </Badge>
                 </div>

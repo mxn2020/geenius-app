@@ -12,7 +12,7 @@
   },
   "dependencies": {
     "@convex-dev/auth": "^0.0.91",
-    "@geenius-ui/react": "^0.1.4",
+    "@geenius-ui/react-css": "^0.1.4",
     "@geenius/shared-api-client": "workspace:*",
     "@geenius/shared-types": "workspace:*",
     "@geenius/shared-ui-tokens": "workspace:*",

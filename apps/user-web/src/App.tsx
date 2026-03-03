@@ -1,7 +1,7 @@
 import React, { useEffect } from "react"
 import { useConvexAuth, useMutation } from "convex/react"
 import { createRouter, createRoute, createRootRoute, RouterProvider, Outlet } from "@tanstack/react-router"
-import { Loading } from "@geenius-ui/react"
+import { Loading } from "@geenius-ui/react-css"
 import Login from "./pages/Login"
 import Dashboard from "./pages/Dashboard"
 import ProjectDetail from "./pages/ProjectDetail"
@@ -47,7 +47,7 @@ function AppLayout() {
   }, [isAuthenticated])
 
   if (isLoading) {
-    return <Loading fullScreen message="Loading..." showMessage />
+    return <Loading>Loading...</Loading>
   }
 
   return isAuthenticated ? <Outlet /> : <Login />

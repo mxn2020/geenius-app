@@ -4,7 +4,7 @@ import {
     Alert,
     Badge,
     Loading,
-} from "@geenius-ui/react"
+} from "@geenius-ui/react-css"
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const getUsageQuery = "resellers:getUsageStats" as any
@@ -29,7 +29,7 @@ export default function Billing() {
     const estimatedBill = (usage?.deployedProjects ?? 0) * perProjectFee
 
     if (profile === undefined) {
-        return <Loading fullScreen message="Loading billing..." showMessage />
+        return <Loading>Loading billing...</Loading>
     }
 
     return (

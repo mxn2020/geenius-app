@@ -127,7 +127,7 @@ importers:
       '@convex-dev/auth':
         specifier: ^0.0.91
         version: 0.0.91(@auth/core@0.37.4)(convex@1.32.0(react@19.2.4))(react@19.2.4)
-      '@geenius-ui/react':
+      '@geenius-ui/react-css':
         specifier: ^0.1.4
         version: 0.1.4(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
       '@geenius/shared-api-client':
@@ -249,7 +249,7 @@ importers:
       '@convex-dev/auth':
         specifier: ^0.0.91
         version: 0.0.91(@auth/core@0.37.4)(convex@1.32.0(react@19.2.4))(react@19.2.4)
-      '@geenius-ui/react':
+      '@geenius-ui/react-css':
         specifier: ^0.1.4
         version: 0.1.4(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
       '@geenius/shared-api-client':
@@ -404,7 +404,7 @@ importers:
       '@convex-dev/auth':
         specifier: ^0.0.91
         version: 0.0.91(@auth/core@0.37.4)(convex@1.32.0(react@19.2.4))(react@19.2.4)
-      '@geenius-ui/react':
+      '@geenius-ui/react-css':
         specifier: ^0.1.4
         version: 0.1.4(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
       '@geenius/shared-api-client':
@@ -1721,8 +1721,8 @@ packages:
     resolution: {integrity: sha512-KZNxZvnGCtiM2aYYZ6Wz0Ix5r47dAvpNLApFtZWnSoERzAdOMzVBOPysBoM0JlF6FKWZ8GPqgn6qt3dV/8Zlpg==}
     hasBin: true
 
-  '@geenius-ui/react@0.1.4':
-    resolution: {integrity: sha512-JBukEJr3FT7Cx/z04D9e54jKiNaKeW1/B7Tmjt+ri3MN4G9QiRJrM7/sBUgPI58j5tFz8i8fdlqwVEpzMoqoNA==}
+  '@geenius-ui/react-css@0.1.4':
+    resolution: {integrity: sha512-IvvY82y2p9kjLazavB+TN8jx0JYH4y6Udj0WGRdBrRH6YEpujl93jGcRCXSyPCMqRxa2jrhE4oD/l8kAiaqguA==}
     peerDependencies:
       react: ^18.0.0 || ^19.0.0
       react-dom: ^18.0.0 || ^19.0.0
@@ -3311,9 +3311,6 @@ packages:
 
   cjs-module-lexer@2.2.0:
     resolution: {integrity: sha512-4bHTS2YuzUvtoLjdy+98ykbNB5jS0+07EvFNXerqZQJ89F7DI6ET7OQo/HJuW6K0aVsKA9hj9/RVb2kQVOrPDQ==}
-
-  class-variance-authority@0.7.1:
-    resolution: {integrity: sha512-Ka+9Trutv7G8M6WT6SeiRWz792K5qEqIGEGzXKhAE6xOWAY6pPH8U+9IY3oCMv6kqTmLsv7Xh/2w2RigkePMsg==}
 
   cli-cursor@2.1.0:
     resolution: {integrity: sha512-8lgKz8LmCRYZZQDpRyT2m5rKJ08TnU4tR9FFFW2rxpxR1FzWi4PQ/NfyODchAatHaUgnSPVcx/R5w6NuTBzFiw==}
@@ -5883,9 +5880,6 @@ packages:
     resolution: {integrity: sha512-Bh7QjT8/SuKUIfObSXNHNSK6WHo6J1tHCqJsuaFDP7gP0fkzSfTxI8y85JrppZ0h8l0maIgc2tfuZQ6/t3GtnQ==}
     engines: {node: ^14.18.0 || >=16.0.0}
 
-  tailwind-merge@2.6.1:
-    resolution: {integrity: sha512-Oo6tHdpZsGpkKG88HJ8RR1rg/RdnEkQEfMoEk2x1XRI3F1AxeU+ijRXpiVUF4UbLfcxxRGw6TbUINKYdWVsQTQ==}
-
   terminal-link@2.1.1:
     resolution: {integrity: sha512-un0FmiRUQNr5PJqy9kP7c40F5BOfpGlYTrxonDChEZB7pzZxRNp/bt+ymiy9/npwXya9KH99nJ/GXFIiUkYGFQ==}
     engines: {node: '>=8'}
@@ -7767,18 +7761,12 @@ snapshots:
       chalk: 4.1.2
       js-yaml: 4.1.1
 
-  '@geenius-ui/react@0.1.4(react-dom@19.2.4(react@19.2.4))(react@19.2.4)':
+  '@geenius-ui/react-css@0.1.4(react-dom@19.2.4(react@19.2.4))(react@19.2.4)':
     dependencies:
       '@geenius-ui/shared': 0.1.4
-      '@tanstack/match-sorter-utils': 8.19.4
-      '@tanstack/react-router': 1.163.3(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
-      '@tanstack/react-table': 8.21.3(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
-      class-variance-authority: 0.7.1
       clsx: 2.1.1
-      lucide-react: 0.576.0(react@19.2.4)
       react: 19.2.4
       react-dom: 19.2.4(react@19.2.4)
-      tailwind-merge: 2.6.1
 
   '@geenius-ui/shared@0.1.4': {}
 
@@ -9570,10 +9558,6 @@ snapshots:
   ci-info@4.4.0: {}
 
   cjs-module-lexer@2.2.0: {}
-
-  class-variance-authority@0.7.1:
-    dependencies:
-      clsx: 2.1.1
 
   cli-cursor@2.1.0:
     dependencies:
@@ -12738,8 +12722,6 @@ snapshots:
   synckit@0.11.12:
     dependencies:
       '@pkgr/core': 0.2.9
-
-  tailwind-merge@2.6.1: {}
 
   terminal-link@2.1.1:
     dependencies:

@@ -8,7 +8,7 @@ import {
     Badge,
     EmptyState,
     Loading,
-} from "@geenius-ui/react"
+} from "@geenius-ui/react-css"
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const listQuery = "prospects:list" as any
@@ -112,7 +112,7 @@ export default function Prospects() {
 
             {/* Table */}
             {prospects === undefined ? (
-                <Loading fullScreen message="Loading prospects..." showMessage />
+                <Loading>Loading prospects...</Loading>
             ) : prospects.length === 0 ? (
                 <EmptyState title="No prospects found" description="Use AI Research or add manually." />
             ) : (
@@ -136,7 +136,6 @@ export default function Prospects() {
                                     <td style={tdStyle}>
                                         <Badge
                                             variant={STATUS_VARIANTS[p.status] || "default"}
-                                            style={{ textTransform: "capitalize" }}
                                         >
                                             {p.status}
                                         </Badge>

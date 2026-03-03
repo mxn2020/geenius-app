@@ -9,7 +9,7 @@ import {
     Badge,
     EmptyState,
     Loading,
-} from "@geenius-ui/react"
+} from "@geenius-ui/react-css"
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const listQuery = "campaigns:list" as any
@@ -113,7 +113,7 @@ export default function Campaigns() {
             )}
 
             {campaigns === undefined ? (
-                <Loading fullScreen message="Loading campaigns..." showMessage />
+                <Loading>Loading campaigns...</Loading>
             ) : campaigns.length === 0 ? (
                 <EmptyState title="No campaigns yet" description="Create one to start outreach." />
             ) : (
@@ -122,7 +122,7 @@ export default function Campaigns() {
                         <Card key={c._id} padding="md">
                             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "0.5rem" }}>
                                 <h3 style={{ margin: 0, fontSize: "1rem" }}>{c.name}</h3>
-                                <Badge variant={STATUS_VARIANTS[c.status] || "default"} style={{ textTransform: "capitalize" }}>
+                                <Badge variant={STATUS_VARIANTS[c.status] || "default"}>
                                     {c.status}
                                 </Badge>
                             </div>
