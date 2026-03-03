@@ -12,11 +12,11 @@
     "test": "vitest run"
   },
   "dependencies": {
-    "zod": "^3.24.1"
+    "zod": "^4.3.6"
   },
   "devDependencies": {
     "@geenius/tsconfig": "workspace:*",
     "typescript": "^5.7.3",
-    "vitest": "^2.1.8"
+    "vitest": "^4.0.18"
   }
 }

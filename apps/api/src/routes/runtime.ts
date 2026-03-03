@@ -8,7 +8,8 @@ import { calculateCredits } from "../lib/credits.js"
 import type { AIModel } from "@geenius/shared-types"
 import { env } from "../env.js"
 
-const convex = new ConvexHttpClient(env.CONVEX_URL ?? "")
+const convexUrl = env.CONVEX_URL || process.env.VITE_CONVEX_URL || ""
+const convex = convexUrl ? new ConvexHttpClient(convexUrl) : null
 
 // Per-project rate limiting: 10 AI requests per minute
 const AI_RATE_LIMIT = 10
@@ -31,6 +32,7 @@ export const runtimeRouter = new Hono()
 
 runtimeRouter.get("/runtime/:projectPublicId/config", async (c) => {
   try {
+    if (!convex) throw new AppError("SERVER_ERROR", "Convex is not configured.", 500)
     const slug = c.req.param("projectPublicId")
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const project = await convex.query("projects:getBySlug" as any, { slug })
@@ -59,6 +61,7 @@ runtimeRouter.post(
   zValidator("json", AIProxySchema),
   async (c) => {
     try {
+      if (!convex) throw new AppError("SERVER_ERROR", "Convex is not configured.", 500)
       const slug = c.req.param("projectPublicId")
       const { model, messages, maxTokens, requestId: clientRequestId } = c.req.valid("json")
 

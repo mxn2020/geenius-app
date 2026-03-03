@@ -9,7 +9,9 @@ import { ok, err } from "../lib/response.js"
 import { AppError } from "../lib/errors.js"
 import { env } from "../env.js"
 
-const convex = new ConvexHttpClient(env.CONVEX_URL ?? "")
+// Provide a valid dummy URL so ConvexHttpClient doesn't synchronously throw if CONVEX_URL is missing.
+// The try/catch blocks within the routes will gracefully handle any connection errors.
+const convex = new ConvexHttpClient(env.CONVEX_URL || "http://127.0.0.1:3214")
 const jobQueue = new JobQueueService(env.WORKER_QUEUE_URL ?? "")
 
 export const projectsRouter = new Hono()

@@ -54,7 +54,7 @@ export class NamecheapService {
     return domains.map((domain) => {
       const available = xml.includes(`Domain="${domain}" Available="true"`)
       const priceMatch = xml.match(/RegularRegistrationPrice="([\d.]+)"/)
-      const registrarCents = priceMatch ? Math.round(parseFloat(priceMatch[1]) * 100) : 1000
+      const registrarCents = priceMatch ? Math.round(parseFloat(priceMatch[1] ?? "0") * 100) : 1000
       return {
         domain,
         available,
@@ -109,8 +109,9 @@ export class NamecheapService {
   }
 
   async setDNStoVercel(domain: string): Promise<void> {
-    const [sld, ...tldParts] = domain.split(".")
-    const tld = tldParts.join(".")
+    const parts = domain.split(".")
+    const sld = parts[0] ?? ""
+    const tld = parts.slice(1).join(".")
     const url = this.buildUrl("namecheap.domains.dns.setCustom", {
       SLD: sld,
       TLD: tld,
@@ -121,8 +122,9 @@ export class NamecheapService {
   }
 
   async getDomainStatus(domain: string): Promise<string> {
-    const [sld, ...tldParts] = domain.split(".")
-    const tld = tldParts.join(".")
+    const parts = domain.split(".")
+    const sld = parts[0] ?? ""
+    const tld = parts.slice(1).join(".")
     const url = this.buildUrl("namecheap.domains.getInfo", { DomainName: domain, SLD: sld, TLD: tld })
     const res = await fetch(url)
     if (!res.ok) throw new Error(`Namecheap: failed to get domain status (${res.status})`)
@@ -133,11 +135,11 @@ export class NamecheapService {
 
   async renewDomain(domain: string): Promise<void> {
     const [sld, ...tldParts] = domain.split(".")
-    const tld = tldParts.join(".")
+    const tld = tldParts.join(".") ?? ""
     const url = this.buildUrl("namecheap.domains.renew", {
       DomainName: domain,
       Years: "1",
-      SLD: sld,
+      SLD: sld ?? "",
       TLD: tld,
     })
     const res = await fetch(url, { method: "POST" })

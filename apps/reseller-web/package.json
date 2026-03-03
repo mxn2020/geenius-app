@@ -1,0 +1,41 @@
+{
+  "name": "@geenius/reseller-web",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit",
+    "preview": "vite preview",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@convex-dev/auth": "^0.0.91",
+    "@geenius-ui/react": "^0.1.4",
+    "@geenius/shared-api-client": "workspace:*",
+    "@geenius/shared-types": "workspace:*",
+    "@geenius/shared-ui-tokens": "workspace:*",
+    "@geenius/shared-validators": "workspace:*",
+    "@tanstack/match-sorter-utils": "^8.19.4",
+    "@tanstack/react-router": "^1.163.3",
+    "@tanstack/react-table": "^8.21.3",
+    "convex": "^1.21.2",
+    "lucide-react": "^0.576.0",
+    "posthog-js": "^1.220.4",
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4",
+    "zod": "^4.3.6"
+  },
+  "devDependencies": {
+    "@geenius/tsconfig": "workspace:*",
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^16.3.2",
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.3",
+    "@vitejs/plugin-react": "^5.1.4",
+    "jsdom": "^28.1.0",
+    "typescript": "^5.7.3",
+    "vite": "^7.3.1"
+  }
+}

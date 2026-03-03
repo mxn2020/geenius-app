@@ -36,10 +36,29 @@ export const listProjects = query({
   },
 })
 
+export const getAll = query({
+  args: {},
+  handler: async (ctx) => {
+    const userId = await getAuthUserId(ctx)
+    if (!userId) return []
+    const user = await ctx.db
+      .query("users")
+      .withIndex("by_convex_user", (q) => q.eq("convexUserId", userId))
+      .unique()
+    if (!user || user.role !== "superAdmin") return []
+
+    return ctx.db
+      .query("projects")
+      .filter((q) => q.neq(q.field("status"), "deleted"))
+      .collect()
+  },
+})
+
 export const createProject = mutation({
   args: {
     name: v.string(),
     slug: v.string(),
+    prompt: v.optional(v.string()),
     plan: v.union(v.literal("website"), v.literal("webapp"), v.literal("authdb"), v.literal("ai")),
   },
   handler: async (ctx, args) => {
@@ -59,6 +78,7 @@ export const createProject = mutation({
       userId: user._id,
       name: args.name,
       slug: args.slug,
+      prompt: args.prompt,
       plan: args.plan,
       status: "creating",
       createdAt: Date.now(),

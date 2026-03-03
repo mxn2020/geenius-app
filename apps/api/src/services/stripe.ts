@@ -4,7 +4,8 @@ export class StripeService {
   private stripe: Stripe
 
   constructor(secretKey: string) {
-    this.stripe = new Stripe(secretKey)
+    // Provide a valid dummy key so the Stripe instance doesn't synchronously throw if STRIPE_SECRET_KEY is missing.
+    this.stripe = new Stripe(secretKey || "sk_test_dummy_key_to_allow_server_boot")
   }
 
   async createCustomer(email: string, userId: string): Promise<Stripe.Customer> {

@@ -3,6 +3,9 @@ import { Hono } from "hono"
 import { logger } from "hono/logger"
 import type { JobType } from "@geenius/shared-types"
 import { runJob } from "./jobRunner.js"
+import { checkEnvConfigs } from "./env.js"
+
+checkEnvConfigs()
 
 const CONVEX_URL = process.env["CONVEX_URL"] ?? ""
 

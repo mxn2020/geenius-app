@@ -22,6 +22,6 @@ export function rateLimitMiddleware(maxRequests = MAX_REQUESTS, windowMs = WINDO
     }
 
     bucket.count++
-    await next()
+    return next()
   }
 }

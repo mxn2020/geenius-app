@@ -21,18 +21,46 @@ const envSchema = z.object({
   ENCRYPTION_KEY: z.string(),
   OPENAI_API_KEY: z.string().optional(),
   ANTHROPIC_API_KEY: z.string().optional(),
+  GOOGLE_PLACES_API_KEY: z.string().optional(),
+  RESEND_API_KEY: z.string().optional(),
   WORKER_QUEUE_URL: z.string().url(),
 })
 
 export type Env = z.infer<typeof envSchema>
 
-export function validateEnv(): Env {
-  const result = envSchema.safeParse(process.env)
-  if (!result.success) {
-    console.error("Invalid environment variables:", result.error.format())
-    process.exit(1)
+export function checkEnvConfigs(): void {
+  const envVars = Object.keys(envSchema.shape)
+  const statusList = envVars.map((key) => {
+    const isSecretObj = envSchema.shape[key as keyof typeof envSchema.shape]
+    let isOptional = false
+    if (isSecretObj instanceof z.ZodOptional) {
+      isOptional = true
+    }
+    const val = process.env[key]
+    const exists = val !== undefined && val !== ""
+
+    return {
+      Variable: key,
+      Status: exists ? "✅ Set" : isOptional ? "⚠️ Optional" : "❌ Missing",
+    }
+  })
+
+  const missingRequired = statusList.filter((item) => item.Status === "❌ Missing")
+
+  if (missingRequired.length > 0) {
+    console.log("\n=======================================================")
+    console.log("⚠️  GEENIUS API: MISSING ENVIRONMENT CONFIGURATIONS")
+    console.log("=======================================================")
+    console.table(statusList)
+    console.log("Running without full configuration. Some features will fail.")
+    console.log("=======================================================\n")
+    if (!process.env["PORT"]) {
+      console.error("FATAL: PORT is absolutely required to boot.")
+      process.exit(1)
+    }
+  } else {
+    console.log("✅ All Geenius API environment configurations are set.")
   }
-  return result.data
 }
 
 export const env = envSchema.partial().parse(process.env)

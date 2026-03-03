@@ -1,0 +1,1 @@
+{"root":["./src/app.tsx","./src/analytics.ts","./src/main.tsx","./src/setuptests.ts","./src/vite-env.d.ts","./src/__tests__/app.test.tsx","./src/components/missingconfigui.tsx","./src/hooks/useauth.ts","./src/pages/dashboard.tsx","./src/pages/login.tsx","./src/pages/__tests__/login.test.tsx","./src/providers/convexprovider.tsx"],"version":"5.9.3"}

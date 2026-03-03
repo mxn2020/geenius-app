@@ -4,16 +4,14 @@ import { runStep } from "./lib/stepRunner.js"
 import { reserveSlug } from "./steps/reserveSlug.js"
 import { createGithubRepo } from "./steps/createGithubRepo.js"
 import { pushTemplate } from "./steps/pushTemplate.js"
-import { applyModules } from "./steps/applyModules.js"
-import { commitChanges } from "./steps/commitChanges.js"
-import { triggerCI } from "./steps/triggerCI.js"
-import { waitCI } from "./steps/waitCI.js"
 import { createVercelProject } from "./steps/createVercelProject.js"
 import { setEnvVars } from "./steps/setEnvVars.js"
 import { deploy } from "./steps/deploy.js"
 import { assignSlugDomain } from "./steps/assignSlugDomain.js"
 import { verifyLive } from "./steps/verifyLive.js"
 import { markLive } from "./steps/markLive.js"
+import { invokeAgentTask } from "./steps/invokeAgentTask.js"
+import { waitAgentTask } from "./steps/waitAgentTask.js"
 import {
   purchaseDomainStep,
   configureDNSStep,
@@ -21,6 +19,10 @@ import {
   verifyDomainStep,
   updateProjectDomainStep,
 } from "./steps/attachDomain.js"
+import { sendCampaignEmails } from "./steps/sendCampaignEmails.js"
+import { generatePreviewSite } from "./steps/generatePreviewSite.js"
+import { convertPreviewToLive } from "./steps/convertPreviewToLive.js"
+import { aiProspectResearch } from "./steps/aiProspectResearch.js"
 
 type Step = { name: string; fn: (ctx: JobContext) => Promise<void>; retryable?: boolean }
 
@@ -28,10 +30,8 @@ const CREATE_STEPS: Step[] = [
   { name: "reserve_slug", fn: reserveSlug, retryable: false },
   { name: "create_github_repo", fn: createGithubRepo },
   { name: "push_template", fn: pushTemplate },
-  { name: "apply_modules", fn: applyModules },
-  { name: "commit_changes", fn: commitChanges },
-  { name: "trigger_ci", fn: triggerCI },
-  { name: "wait_ci", fn: waitCI, retryable: false },
+  { name: "invoke_agent_task", fn: invokeAgentTask },
+  { name: "wait_agent_task", fn: waitAgentTask, retryable: true },
   { name: "create_vercel_project", fn: createVercelProject },
   { name: "set_env_vars", fn: setEnvVars },
   { name: "deploy", fn: deploy, retryable: false },
@@ -47,10 +47,8 @@ const REDEPLOY_STEPS: Step[] = [
 ]
 
 const UPGRADE_STEPS: Step[] = [
-  { name: "apply_modules", fn: applyModules },
-  { name: "commit_changes", fn: commitChanges },
-  { name: "trigger_ci", fn: triggerCI },
-  { name: "wait_ci", fn: waitCI, retryable: false },
+  { name: "invoke_agent_task", fn: invokeAgentTask },
+  { name: "wait_agent_task", fn: waitAgentTask, retryable: true },
   { name: "deploy", fn: deploy, retryable: false },
   { name: "verify_live", fn: verifyLive, retryable: false },
   { name: "mark_live", fn: markLive },
@@ -64,12 +62,35 @@ const ATTACH_DOMAIN_STEPS: Step[] = [
   { name: "update_project_domain", fn: updateProjectDomainStep },
 ]
 
+const PREVIEW_STEPS: Step[] = [
+  { name: "reserve_slug", fn: reserveSlug, retryable: false },
+  { name: "create_github_repo", fn: createGithubRepo },
+  { name: "push_template", fn: pushTemplate },
+  { name: "generate_preview_site", fn: generatePreviewSite },
+]
+
+const CONVERT_STEPS: Step[] = [
+  { name: "convert_preview_to_live", fn: convertPreviewToLive },
+  { name: "deploy", fn: deploy, retryable: false },
+  { name: "assign_slug_domain", fn: assignSlugDomain },
+  { name: "verify_live", fn: verifyLive, retryable: false },
+  { name: "mark_live", fn: markLive },
+]
+
+const CAMPAIGN_STEPS: Step[] = [
+  { name: "ai_prospect_research", fn: aiProspectResearch },
+  { name: "send_campaign_emails", fn: sendCampaignEmails },
+]
+
 function getSteps(jobType: string): Step[] {
   switch (jobType) {
     case "create": return CREATE_STEPS
     case "redeploy": return REDEPLOY_STEPS
     case "upgrade": return UPGRADE_STEPS
     case "attach_domain": return ATTACH_DOMAIN_STEPS
+    case "preview": return PREVIEW_STEPS
+    case "convert": return CONVERT_STEPS
+    case "campaign_send": return CAMPAIGN_STEPS
     default: return CREATE_STEPS
   }
 }
@@ -89,7 +110,8 @@ export async function runJob(
     jobType,
     log: async (level, message) => {
       console.log(`[${level.toUpperCase()}] [job:${jobId}] ${message}`)
-      await rawConvex.mutation("jobs:appendJobLog" as Parameters<typeof rawConvex.mutation>[0], {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      await rawConvex.mutation("jobs:appendJobLog" as any, {
         jobId,
         level,
         message,
@@ -97,15 +119,18 @@ export async function runJob(
     },
     convex: {
       query: async <T>(fn: string, args: Record<string, unknown>) => {
-        return rawConvex.query(fn as Parameters<typeof rawConvex.query>[0], args) as Promise<T>
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        return rawConvex.query(fn as any, args) as Promise<T>
       },
       mutation: async <T>(fn: string, args: Record<string, unknown>) => {
-        return rawConvex.mutation(fn as Parameters<typeof rawConvex.mutation>[0], args) as Promise<T>
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        return rawConvex.mutation(fn as any, args) as Promise<T>
       },
     },
   }
 
-  await rawConvex.mutation("jobs:updateJob" as Parameters<typeof rawConvex.mutation>[0], {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  await rawConvex.mutation("jobs:updateJob" as any, {
     id: jobId,
     state: "running",
   })
@@ -116,7 +141,8 @@ export async function runJob(
       await runStep(ctx, step.name, () => step.fn(ctx), { retryable: step.retryable ?? true })
     }
 
-    await rawConvex.mutation("jobs:updateJob" as Parameters<typeof rawConvex.mutation>[0], {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    await rawConvex.mutation("jobs:updateJob" as any, {
       id: jobId,
       state: "done",
     })
@@ -124,7 +150,8 @@ export async function runJob(
   } catch (err) {
     const message = err instanceof Error ? err.message : String(err)
     await ctx.log("error", `Job ${jobId} failed: ${message}`)
-    await rawConvex.mutation("jobs:updateJob" as Parameters<typeof rawConvex.mutation>[0], {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    await rawConvex.mutation("jobs:updateJob" as any, {
       id: jobId,
       state: "failed",
       error: message,

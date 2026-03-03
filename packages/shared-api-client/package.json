@@ -11,9 +11,9 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "zod": "^3.24.1",
     "@geenius/shared-types": "workspace:*",
-    "@geenius/shared-validators": "workspace:*"
+    "@geenius/shared-validators": "workspace:*",
+    "zod": "^4.3.6"
   },
   "devDependencies": {
     "@geenius/tsconfig": "workspace:*",
