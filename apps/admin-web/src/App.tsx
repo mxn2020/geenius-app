@@ -3,6 +3,7 @@ import { useConvexAuth } from "convex/react"
 import { useQuery } from "convex/react"
 import { useAuthActions } from "@convex-dev/auth/react"
 import { api } from "../../../convex/_generated/api"
+import { Button, Card, Loading } from "@geenius-ui/react"
 import Login from "./pages/Login"
 import Dashboard from "./pages/Dashboard"
 
@@ -12,11 +13,7 @@ function AppContent() {
   const { signOut } = useAuthActions()
 
   if (isLoading || (isAuthenticated && user === undefined)) {
-    return (
-      <div style={{ display: "flex", alignItems: "center", justifyContent: "center", minHeight: "100vh" }}>
-        <p>Loading...</p>
-      </div>
-    )
+    return <Loading fullScreen message="Loading..." showMessage />
   }
 
   if (!isAuthenticated) {
@@ -25,15 +22,16 @@ function AppContent() {
 
   if (user && user.role !== "superAdmin") {
     return (
-      <div style={{ display: "flex", alignItems: "center", justifyContent: "center", minHeight: "100vh", flexDirection: "column" }}>
-        <h1 style={{ fontSize: "2rem", marginBottom: "1rem" }}>Unauthorized</h1>
-        <p>You do not have administrative privileges to view this portal.</p>
-        <button
-          onClick={void signOut}
-          style={{ marginTop: "1rem", padding: "0.5rem 1rem", backgroundColor: "#e2e8f0", borderRadius: "0.25rem", cursor: "pointer" }}
-        >
-          Sign Out
-        </button>
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "center", minHeight: "100vh", flexDirection: "column" as const }}>
+        <Card padding="lg">
+          <h1 style={{ fontSize: "1.5rem", marginBottom: "0.5rem", textAlign: "center" }}>🔒 Unauthorized</h1>
+          <p style={{ color: "#6b7280", textAlign: "center", marginBottom: "1.5rem" }}>
+            You do not have administrative privileges to view this portal.
+          </p>
+          <Button variant="outline" onClick={() => signOut()} style={{ width: "100%" }}>
+            Sign Out
+          </Button>
+        </Card>
       </div>
     )
   }

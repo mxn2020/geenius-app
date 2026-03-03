@@ -1,5 +1,6 @@
 import React, { useState } from "react"
-import { useConvexAuth, useQuery, useMutation } from "convex/react"
+import { useConvexAuth, useQuery } from "convex/react"
+import { Button, Loading } from "@geenius-ui/react"
 import Login from "./pages/Login"
 import Dashboard from "./pages/Dashboard"
 import Prospects from "./pages/Prospects"
@@ -27,7 +28,7 @@ function ResellerPortal() {
   const [page, setPage] = useState<PageName>("dashboard")
 
   if (me === undefined) {
-    return <div style={styles.loading}><p>Loading...</p></div>
+    return <Loading fullScreen message="Loading..." showMessage />
   }
 
   if (!me || me.role !== "reseller") {
@@ -89,7 +90,7 @@ function ResellerPortal() {
 function AppContent() {
   const { isAuthenticated, isLoading } = useConvexAuth()
   if (isLoading) {
-    return <div style={styles.loading}><p>Loading...</p></div>
+    return <Loading fullScreen message="Loading..." showMessage />
   }
   return isAuthenticated ? <ResellerPortal /> : <Login />
 }
@@ -99,7 +100,6 @@ export default function App() {
 }
 
 const styles: Record<string, React.CSSProperties> = {
-  loading: { display: "flex", alignItems: "center", justifyContent: "center", minHeight: "100vh" },
   unauthorized: {
     display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center",
     minHeight: "100vh", fontFamily: "system-ui, sans-serif", textAlign: "center",
