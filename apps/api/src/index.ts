@@ -11,9 +11,7 @@ import { aiRouter } from "./routes/ai.js"
 import { runtimeRouter } from "./routes/runtime.js"
 import resellerRouter from "./routes/reseller.js"
 import { startRenewalCron } from "./jobs/renewalCron.js"
-import { checkEnvConfigs } from "./env.js"
-
-checkEnvConfigs()
+import { env } from "./env.js"
 
 const app = new Hono()
 
@@ -36,10 +34,9 @@ app.route("/api", aiRouter)
 app.route("/api", runtimeRouter)
 app.route("/api/reseller", resellerRouter)
 
-const port = Number(process.env["PORT"] ?? 3000)
+const port = Number(env.PORT ?? 3000)
 console.log(`API server starting on port ${port}`)
 
-const convexUrl = process.env["CONVEX_URL"] || "http://127.0.0.1:3214"
-startRenewalCron(new ConvexHttpClient(convexUrl))
+startRenewalCron(new ConvexHttpClient(env.CONVEX_URL))
 
 serve({ fetch: app.fetch, port })

@@ -1,8 +1,10 @@
 import { Hono } from "hono"
 import { AIResearchService } from "../services/aiResearch.js"
+import { authMiddleware } from "../middleware/auth.js"
 import { env } from "../env.js"
 
 const reseller = new Hono()
+reseller.use("*", authMiddleware)
 
 // ─── AI Prospect Research ────────────────────────────
 reseller.post("/research", async (c) => {

@@ -1,0 +1,18 @@
+services:
+  convex:
+    provider: convex
+    project: geenius-app
+    team: maldinio
+    deployment: dev:judicious-newt-339
+    region: eu-west-1
+    dashboard: https://dashboard.convex.dev
+
+  github:
+    provider: github
+    org: mxn2020
+    repo: geenius-app
+
+  nvidia:
+    provider: nvidia
+    purpose: AI model inference
+    key_env_var: NVIDIA_API_KEY

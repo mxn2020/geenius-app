@@ -5,7 +5,7 @@ export async function createVercelProject(ctx: JobContext): Promise<void> {
     slug: string
     githubRepoId?: string
     vercelProjectId?: string
-  }>("projects:getProject", { id: ctx.projectId })
+  }>("projects:workerGetProject", { id: ctx.projectId })
   if (!project) throw new Error("Project not found")
 
   if (project.vercelProjectId) {

@@ -4,6 +4,6 @@ export default defineConfig({
     test: {
         globals: true,
         environment: "node",
-        include: ["convex/**/*.test.ts"],
+        include: ["packages/backend/__tests__/**/*.test.ts"],
     },
 })

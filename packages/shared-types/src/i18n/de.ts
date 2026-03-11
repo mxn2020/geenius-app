@@ -1,0 +1,48 @@
+import type { Translations } from "./en"
+
+export const de: Translations = {
+  common: {
+    loading: "Laden...",
+    error: "Etwas ist schiefgelaufen",
+    retry: "Erneut versuchen",
+    save: "Speichern",
+    cancel: "Abbrechen",
+    delete: "Löschen",
+    edit: "Bearbeiten",
+    create: "Erstellen",
+    search: "Suchen",
+    signIn: "Anmelden",
+    signOut: "Abmelden",
+    signUp: "Registrieren",
+    email: "E-Mail",
+    password: "Passwort",
+    submit: "Absenden",
+    back: "Zurück",
+    next: "Weiter",
+    yes: "Ja",
+    no: "Nein",
+  },
+  auth: {
+    unauthorized: "Nicht autorisiert",
+    unauthorizedMessage: "Sie haben keine Administratorrechte, um dieses Portal anzuzeigen.",
+    loginTitle: "In Ihr Konto einloggen",
+    forgotPassword: "Passwort vergessen?",
+  },
+  nav: {
+    dashboard: "Dashboard",
+    users: "Benutzer",
+    jobs: "Aufgaben",
+    resellers: "Wiederverkäufer",
+    campaigns: "Kampagnen",
+    prospects: "Interessenten",
+    settings: "Einstellungen",
+    billing: "Abrechnung",
+    compliance: "Compliance",
+    branding: "Markengestaltung",
+  },
+  dashboard: {
+    title: "Dashboard",
+    welcome: "Willkommen zurück",
+    overview: "Übersicht",
+  },
+} as const

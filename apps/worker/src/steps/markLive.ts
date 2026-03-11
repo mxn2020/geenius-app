@@ -2,7 +2,7 @@ import type { JobContext } from "../lib/context.js"
 
 export async function markLive(ctx: JobContext): Promise<void> {
   const project = await ctx.convex.query<{ slug: string; status: string }>(
-    "projects:getProject",
+    "projects:workerGetProject",
     { id: ctx.projectId }
   )
   if (!project) throw new Error("Project not found")

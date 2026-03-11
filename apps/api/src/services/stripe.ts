@@ -4,8 +4,8 @@ export class StripeService {
   private stripe: Stripe
 
   constructor(secretKey: string) {
-    // Provide a valid dummy key so the Stripe instance doesn't synchronously throw if STRIPE_SECRET_KEY is missing.
-    this.stripe = new Stripe(secretKey || "sk_test_dummy_key_to_allow_server_boot")
+    if (!secretKey) throw new Error("STRIPE_SECRET_KEY is required")
+    this.stripe = new Stripe(secretKey)
   }
 
   async createCustomer(email: string, userId: string): Promise<Stripe.Customer> {
@@ -73,5 +73,13 @@ export class StripeService {
 
   verifyWebhookSignature(payload: string, signature: string, secret: string): Stripe.Event {
     return this.stripe.webhooks.constructEvent(payload, signature, secret)
+  }
+
+  async getPaymentIntent(paymentIntentId: string): Promise<Stripe.PaymentIntent> {
+    return this.stripe.paymentIntents.retrieve(paymentIntentId)
+  }
+
+  async confirmPaymentIntent(paymentIntentId: string): Promise<Stripe.PaymentIntent> {
+    return this.stripe.paymentIntents.confirm(paymentIntentId)
   }
 }

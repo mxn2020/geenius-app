@@ -1,0 +1,25 @@
+{
+  "name": "@geenius/backend",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "exports": {
+    "./convex/*": "./convex/*"
+  },
+  "main": "./convex/schema.ts",
+  "scripts": {
+    "dev": "convex dev",
+    "deploy": "convex deploy",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@auth/core": "^0.37.4",
+    "@convex-dev/auth": "^0.0.91",
+    "convex": "^1.32.0"
+  },
+  "devDependencies": {
+    "@geenius/tsconfig": "workspace:*",
+    "typescript": "^5.7.3"
+  }
+}

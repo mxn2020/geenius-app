@@ -108,8 +108,9 @@ export default function Dashboard() {
               <h3 style={styles.formTitle}>Launch a New Project</h3>
               <form onSubmit={handleCreate} style={styles.form}>
                 <div style={styles.inputGroup}>
-                  <Label>Project Name</Label>
+                  <Label htmlFor="projectName">Project Name</Label>
                   <Input
+                    id="projectName"
                     required
                     value={name}
                     onChange={(e) => {
@@ -121,9 +122,10 @@ export default function Dashboard() {
                 </div>
 
                 <div style={styles.inputGroup}>
-                  <Label>Subdomain</Label>
+                  <Label htmlFor="projectSlug">Subdomain</Label>
                   <div style={styles.domainRow}>
                     <Input
+                      id="projectSlug"
                       style={{ borderTopRightRadius: 0, borderBottomRightRadius: 0 }}
                       required
                       value={slug}
@@ -134,8 +136,8 @@ export default function Dashboard() {
                 </div>
 
                 <div style={styles.inputGroup}>
-                  <Label>Plan</Label>
-                  <Select value={plan} onChange={(e) => setPlan(e.target.value)}>
+                  <Label htmlFor="projectPlan">Plan</Label>
+                  <Select id="projectPlan" value={plan} onChange={(e) => setPlan(e.target.value)}>
                     <SelectItem value="website">Website — Static / Landing Page</SelectItem>
                     <SelectItem value="webapp">Web App — Dynamic React</SelectItem>
                     <SelectItem value="authdb">Auth + DB — Fullstack Convex</SelectItem>
@@ -144,8 +146,9 @@ export default function Dashboard() {
                 </div>
 
                 <div style={styles.inputGroup}>
-                  <Label>AI Prompt (Optional)</Label>
+                  <Label htmlFor="projectPrompt">AI Prompt (Optional)</Label>
                   <Textarea
+                    id="projectPrompt"
                     value={prompt}
                     onChange={(e) => setPrompt(e.target.value)}
                     placeholder="Describe what the AI should build for you. e.g. A CRM for real estate agents..."

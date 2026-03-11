@@ -4,6 +4,7 @@ import ReactDOM from "react-dom/client"
 import App from "./App"
 import { ConvexProvider } from "./providers/ConvexProvider"
 import { MissingConfigUI } from "./components/MissingConfigUI"
+import { ErrorBoundary } from "./components/ErrorBoundary"
 
 const rootEl = document.getElementById("root")
 if (!rootEl) throw new Error("No #root element")
@@ -33,16 +34,19 @@ const missingRequired = requiredConfigs.filter(c => c.isMissing && c.isRequired)
 if (missingRequired.length > 0) {
   ReactDOM.createRoot(rootEl).render(
     <React.StrictMode>
-      <MissingConfigUI configs={requiredConfigs} />
+      <ErrorBoundary>
+        <MissingConfigUI configs={requiredConfigs} />
+      </ErrorBoundary>
     </React.StrictMode>
   )
 } else {
-  // If PostHog isn't strictly provided, don't wrap the app in it (skip it logically)
   ReactDOM.createRoot(rootEl).render(
     <React.StrictMode>
-      <ConvexProvider>
-        <App />
-      </ConvexProvider>
+      <ErrorBoundary>
+        <ConvexProvider>
+          <App />
+        </ConvexProvider>
+      </ErrorBoundary>
     </React.StrictMode>
   )
 }

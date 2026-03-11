@@ -5,7 +5,7 @@ export async function setEnvVars(ctx: JobContext): Promise<void> {
     slug: string
     plan: string
     vercelProjectId?: string
-  }>("projects:getProject", { id: ctx.projectId })
+  }>("projects:workerGetProject", { id: ctx.projectId })
   if (!project) throw new Error("Project not found")
   if (!project.vercelProjectId) throw new Error("Vercel project not created yet")
 

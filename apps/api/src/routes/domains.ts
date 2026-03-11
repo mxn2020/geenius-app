@@ -9,15 +9,13 @@ import { ok, err } from "../lib/response.js"
 import { AppError } from "../lib/errors.js"
 import { env } from "../env.js"
 
-// Provide a valid dummy URL so ConvexHttpClient doesn't synchronously throw if CONVEX_URL is missing.
-// The try/catch blocks within the routes will gracefully handle any connection errors.
-const convex = new ConvexHttpClient(env.CONVEX_URL || "http://127.0.0.1:3214")
+const convex = new ConvexHttpClient(env.CONVEX_URL)
 const namecheap = new NamecheapService(
-  env.NAMECHEAP_API_USER ?? "",
-  env.NAMECHEAP_API_KEY ?? "",
-  env.NAMECHEAP_CLIENT_IP ?? ""
+  env.NAMECHEAP_API_USER,
+  env.NAMECHEAP_API_KEY,
+  env.NAMECHEAP_CLIENT_IP
 )
-const stripe = new StripeService(env.STRIPE_SECRET_KEY ?? "")
+const stripe = new StripeService(env.STRIPE_SECRET_KEY)
 
 export const domainsRouter = new Hono()
 
@@ -54,7 +52,7 @@ domainsRouter.post(
       const projectId = c.req.param("id")
       const { domainName } = c.req.valid("json")
       const priceCents = await namecheap.getPrice(domainName)
-      const intent = await stripe.createPaymentIntent(priceCents, "usd", {
+      const intent = await stripe.createPaymentIntent(priceCents, "eur", {
         projectId,
         domainName,
         type: "domain_purchase",
@@ -73,7 +71,19 @@ domainsRouter.post(
   async (c) => {
     try {
       const projectId = c.req.param("id")
-      const { domainName } = c.req.valid("json")
+      const { domainName, paymentIntentId } = c.req.valid("json")
+
+      // Verify payment succeeded before purchasing domain
+      const intent = await stripe.getPaymentIntent(paymentIntentId)
+      if (intent.status !== "succeeded") {
+        return err(c, new AppError("PAYMENT_FAILED", `Payment not completed (status: ${intent.status})`, 402))
+      }
+
+      // Verify the PaymentIntent metadata matches this request
+      if (intent.metadata?.domainName !== domainName || intent.metadata?.projectId !== projectId) {
+        return err(c, new AppError("PAYMENT_MISMATCH", "PaymentIntent does not match this domain/project", 400))
+      }
+
       await namecheap.purchaseDomain(domainName, 1)
       const priceCents = await namecheap.getPrice(domainName)
       // eslint-disable-next-line @typescript-eslint/no-explicit-any

@@ -5,7 +5,7 @@ const POLL_INTERVAL_MS = 10_000
 
 export async function verifyLive(ctx: JobContext): Promise<void> {
   const project = await ctx.convex.query<{ slug: string; primaryUrl?: string }>(
-    "projects:getProject",
+    "projects:workerGetProject",
     { id: ctx.projectId }
   )
   if (!project) throw new Error("Project not found")

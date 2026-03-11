@@ -2,18 +2,16 @@ import { describe, it, expect } from "vitest"
 import { StripeService } from "../stripe.js"
 
 describe("StripeService", () => {
-    it("should initialize cleanly and use a dummy token if STRIPE_SECRET_KEY is omitted without crashing", () => {
-        // If the Stripe SDK hits an empty string, it synchronously crashes Node 
-        // This test ensures our fallback wrapper handles the init cleanly.
+    it("should throw if STRIPE_SECRET_KEY is omitted or empty", () => {
+        // We expect new StripeService("") to throw
 
-        // We expect new StripeService("") NOT to throw
         expect(() => {
             new StripeService("")
-        }).not.toThrow()
+        }).toThrow("STRIPE_SECRET_KEY is required")
 
         expect(() => {
             new StripeService(undefined as any)
-        }).not.toThrow()
+        }).toThrow("STRIPE_SECRET_KEY is required")
     })
 
     it("should initialize normally when given a valid sk_ string", () => {

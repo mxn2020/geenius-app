@@ -1,6 +1,11 @@
 import { ConvexHttpClient } from "convex/browser"
 import type { JobContext } from "./lib/context.js"
 import { runStep } from "./lib/stepRunner.js"
+import {
+  createGitHubService,
+  createVercelService,
+  createNamecheapService,
+} from "./lib/services.js"
 import { reserveSlug } from "./steps/reserveSlug.js"
 import { createGithubRepo } from "./steps/createGithubRepo.js"
 import { pushTemplate } from "./steps/pushTemplate.js"
@@ -99,15 +104,33 @@ export async function runJob(
   jobId: string,
   jobType: string,
   projectId: string,
-  convexUrl: string
+  convexUrl: string,
+  meta?: Record<string, unknown>
 ): Promise<void> {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const rawConvex = new ConvexHttpClient(convexUrl)
+
+  // Create service instances from environment variables
+  const github = createGitHubService(
+    process.env["GITHUB_ORG"],
+    process.env["GITHUB_APP_ID"],
+    process.env["GITHUB_APP_PRIVATE_KEY"]
+  )
+  const vercel = createVercelService(
+    process.env["VERCEL_API_TOKEN"],
+    process.env["VERCEL_TEAM_ID"]
+  )
+  const namecheap = createNamecheapService(
+    process.env["NAMECHEAP_API_USER"],
+    process.env["NAMECHEAP_API_KEY"],
+    process.env["NAMECHEAP_CLIENT_IP"]
+  )
 
   const ctx: JobContext = {
     jobId,
     projectId,
     jobType,
+    meta,
     log: async (level, message) => {
       console.log(`[${level.toUpperCase()}] [job:${jobId}] ${message}`)
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -127,6 +150,9 @@ export async function runJob(
         return rawConvex.mutation(fn as any, args) as Promise<T>
       },
     },
+    github,
+    vercel,
+    namecheap,
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -159,3 +185,4 @@ export async function runJob(
     throw err
   }
 }
+

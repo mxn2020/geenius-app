@@ -8,10 +8,8 @@ import { ok, err } from "../lib/response.js"
 import { AppError } from "../lib/errors.js"
 import { env } from "../env.js"
 
-// Provide a valid dummy URL so ConvexHttpClient doesn't synchronously throw if CONVEX_URL is missing.
-// The try/catch blocks within the routes will gracefully handle any connection errors.
-const convex = new ConvexHttpClient(env.CONVEX_URL || "http://127.0.0.1:3214")
-const stripe = new StripeService(env.STRIPE_SECRET_KEY ?? "")
+const convex = new ConvexHttpClient(env.CONVEX_URL)
+const stripe = new StripeService(env.STRIPE_SECRET_KEY)
 
 export const billingRouter = new Hono()
 
@@ -141,6 +139,12 @@ billingRouter.post("/webhook/stripe", async (c) => {
         const projectId = sub.metadata?.projectId ?? ""
         const priceId = sub.items?.data?.[0]?.price?.id ?? ""
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const existingSub = await convex.query("subscriptions:getByStripeSubscriptionId" as any, {
+          stripeSubscriptionId: sub.id,
+        })
+        const previousPriceId = existingSub?.stripePriceId
+
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         await convex.mutation("subscriptions:upsert" as any, {
           projectId,
           stripeSubscriptionId: sub.id,
@@ -149,6 +153,20 @@ billingRouter.post("/webhook/stripe", async (c) => {
           currentPeriodStart: sub.current_period_start * 1000,
           currentPeriodEnd: sub.current_period_end * 1000,
         })
+
+        // If plan changed (different price ID), dispatch an upgrade job
+        if (previousPriceId && previousPriceId !== priceId && projectId) {
+          try {
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            const jobId = await convex.mutation("jobs:createJob" as any, {
+              projectId,
+              type: "upgrade",
+            })
+            console.log(`[webhook] plan changed for project ${projectId}, dispatched upgrade job ${jobId}`)
+          } catch (jobErr) {
+            console.error(`[webhook] failed to dispatch upgrade job for project ${projectId}:`, jobErr)
+          }
+        }
         break
       }
 

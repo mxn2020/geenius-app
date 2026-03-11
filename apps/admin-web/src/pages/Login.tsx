@@ -38,8 +38,9 @@ export default function Login() {
             {error && <div style={styles.error}>{error}</div>}
 
             <div style={styles.fieldGroup}>
-              <Label>Email</Label>
+              <Label htmlFor="email">Email</Label>
               <Input
+                id="email"
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
@@ -49,8 +50,9 @@ export default function Login() {
             </div>
 
             <div style={styles.fieldGroup}>
-              <Label>Password</Label>
+              <Label htmlFor="password">Password</Label>
               <Input
+                id="password"
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}

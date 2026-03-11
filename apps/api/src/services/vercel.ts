@@ -67,6 +67,8 @@ export class VercelService {
       method: "POST",
       body: JSON.stringify({ name: domain }),
     })
+    // 409 = domain already assigned — idempotent success
+    if (res.status === 409) return
     if (!res.ok) throw new Error(`Vercel: failed to add domain (${res.status})`)
   }
 

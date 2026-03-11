@@ -12,39 +12,25 @@ const envSchema = z.object({
 
 export type Env = z.infer<typeof envSchema>
 
-export function checkEnvConfigs(): void {
-    const envVars = Object.keys(envSchema.shape)
-    const statusList = envVars.map((key) => {
-        const isSecretObj = envSchema.shape[key as keyof typeof envSchema.shape]
-        let isOptional = false
-        if (isSecretObj instanceof z.ZodOptional) {
-            isOptional = true
+/**
+ * Validate environment variables on startup.
+ * Throws if required variables are missing — crash-fast behaviour.
+ */
+export function validateEnv(): Env {
+    try {
+        return envSchema.parse(process.env)
+    } catch (e) {
+        if (e instanceof z.ZodError) {
+            console.error("\n=======================================================")
+            console.error("⚠️  GEENIUS WORKER: MISSING ENVIRONMENT CONFIGURATIONS")
+            console.error("=======================================================")
+            for (const issue of e.issues) {
+                console.error(`  ❌ ${issue.path.join(".")}: ${issue.message}`)
+            }
+            console.error("=======================================================\n")
         }
-        const val = process.env[key]
-        const exists = val !== undefined && val !== ""
-
-        return {
-            Variable: key,
-            Status: exists ? "✅ Set" : isOptional ? "⚠️ Optional" : "❌ Missing",
-        }
-    })
-
-    const missingRequired = statusList.filter((item) => item.Status === "❌ Missing")
-
-    if (missingRequired.length > 0) {
-        console.log("\n=======================================================")
-        console.log("⚠️  GEENIUS WORKER: MISSING ENVIRONMENT CONFIGURATIONS")
-        console.log("=======================================================")
-        console.table(statusList)
-        console.log("Running without full configuration. Some background jobs will fail.")
-        console.log("=======================================================\n")
-        if (!process.env["PORT"]) {
-            console.error("FATAL: PORT is absolutely required to boot worker.")
-            process.exit(1)
-        }
-    } else {
-        console.log("✅ All Geenius Worker environment configurations are set.")
+        throw e
     }
 }
 
-export const env = envSchema.partial().parse(process.env)
+export const env = validateEnv()

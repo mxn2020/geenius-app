@@ -8,24 +8,26 @@ import { calculateCredits } from "../lib/credits.js"
 import type { AIModel } from "@geenius/shared-types"
 import { env } from "../env.js"
 
-const convexUrl = env.CONVEX_URL || process.env.VITE_CONVEX_URL || ""
-const convex = convexUrl ? new ConvexHttpClient(convexUrl) : null
+const convex = env.CONVEX_URL ? new ConvexHttpClient(env.CONVEX_URL) : null
 
 // Per-project rate limiting: 10 AI requests per minute
 const AI_RATE_LIMIT = 10
 const AI_RATE_WINDOW_MS = 60_000
 const aiRateBuckets = new Map<string, { count: number; resetAt: number }>()
 
-function checkAIRateLimit(projectId: string): boolean {
+function checkAIRateLimit(projectId: string): { allowed: boolean; retryAfterSeconds?: number } {
   const now = Date.now()
   const bucket = aiRateBuckets.get(projectId)
   if (!bucket || now > bucket.resetAt) {
     aiRateBuckets.set(projectId, { count: 1, resetAt: now + AI_RATE_WINDOW_MS })
-    return true
+    return { allowed: true }
   }
-  if (bucket.count >= AI_RATE_LIMIT) return false
+  if (bucket.count >= AI_RATE_LIMIT) {
+    const retryAfterSeconds = Math.ceil((bucket.resetAt - now) / 1000)
+    return { allowed: false, retryAfterSeconds }
+  }
   bucket.count++
-  return true
+  return { allowed: true }
 }
 
 export const runtimeRouter = new Hono()
@@ -69,14 +71,21 @@ runtimeRouter.post(
       const project = await convex.query("projects:getBySlug" as any, { slug })
       if (!project) return err(c, new AppError("NOT_FOUND", "Project not found", 404))
 
+      // Verify project is on AI plan
+      if (project.plan !== "ai") {
+        return c.json({ error: "Forbidden", code: "AI_NOT_ENABLED", message: "Project must be on the 'ai' plan to use AI features" }, 403)
+      }
+
       // Per-project rate limiting (10 AI requests per minute)
-      if (!checkAIRateLimit(project._id)) {
+      const rateCheck = checkAIRateLimit(project._id)
+      if (!rateCheck.allowed) {
+        c.header("Retry-After", String(rateCheck.retryAfterSeconds ?? 60))
         return c.json({ error: "Too Many Requests", code: "RATE_LIMIT_EXCEEDED" }, 429)
       }
 
       // Check project credits before calling the AI model
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const allowance = await convex.query("ai:getCurrentAllowance" as any, { projectId: project._id })
+      const allowance = await convex.query("ai:workerGetCurrentAllowance" as any, { projectId: project._id })
       if (allowance && allowance.creditsUsed >= allowance.creditsGranted) {
         return c.json({ error: "Payment Required", code: "CREDITS_EXHAUSTED" }, 402)
       }

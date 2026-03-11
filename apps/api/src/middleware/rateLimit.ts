@@ -18,6 +18,8 @@ export function rateLimitMiddleware(maxRequests = MAX_REQUESTS, windowMs = WINDO
     }
 
     if (bucket.count >= maxRequests) {
+      const retryAfterSeconds = Math.ceil((bucket.resetAt - now) / 1000)
+      c.header("Retry-After", String(retryAfterSeconds))
       return c.json({ error: "Too Many Requests", code: "RATE_LIMIT_EXCEEDED" }, 429)
     }
 

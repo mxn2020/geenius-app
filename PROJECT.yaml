@@ -1,0 +1,13 @@
+name: geenius-app
+description: Multi-tenant SaaS platform for AI-powered lead generation, reseller management, and campaign automation
+category: client-project
+priority: high
+tags: [geenius, app, client, production, web]
+  - saas
+  - ai
+  - lead-generation
+  - convex
+  - react
+  - monorepo
+deploy_url: null
+repository: https://github.com/mxn2020/geenius-app

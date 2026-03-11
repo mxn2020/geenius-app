@@ -7,7 +7,7 @@ export async function deploy(ctx: JobContext): Promise<void> {
   const project = await ctx.convex.query<{
     slug: string
     vercelProjectId?: string
-  }>("projects:getProject", { id: ctx.projectId })
+  }>("projects:workerGetProject", { id: ctx.projectId })
   if (!project) throw new Error("Project not found")
   if (!project.vercelProjectId) throw new Error("Vercel project not created yet")
 

@@ -2,6 +2,14 @@
   "name": "geenius",
   "version": "0.0.0",
   "private": true,
+  "description": "Multi-tenant SaaS platform for AI-powered lead generation, reseller management, and campaign automation",
+  "author": "mxn2020",
+  "license": "UNLICENSED",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mxn2020/geenius-app.git"
+  },
+  "keywords": ["saas", "ai", "lead-generation", "convex", "react", "monorepo"],
   "scripts": {
     "dev": "turbo run dev",
     "build": "turbo run build",
@@ -25,9 +33,5 @@
     "node": ">=20.0.0"
   },
   "packageManager": "pnpm@10.30.0",
-  "dependencies": {
-    "@auth/core": "^0.37.4",
-    "@convex-dev/auth": "^0.0.91",
-    "convex": "^1.32.0"
-  }
+  "dependencies": {}
 }
